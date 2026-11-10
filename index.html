@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>의학용어 연습실</title>
+<meta name="description" content="중앙대학교 간호학과 의학용어 시험 대비 연습 페이지 모음">
+<meta name="theme-color" content="#1b4dab">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%231b4dab'/><path d='M27 16h10v11h11v10H37v11H27V37H16V27h11z' fill='white'/></svg>">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  :root{
+    --bg:#f4f6fb; --surface:#ffffff; --surface-2:#eef2fa;
+    --text:#141a2a; --muted:#5d6779; --line:#e2e7f0;
+    --primary:#1b4dab; --primary-2:#3a74e0; --primary-soft:#e6eeff;
+    --accent:#e2574c; --ok:#1f9d6b;
+    --shadow:0 1px 2px rgba(20,26,42,.05),0 8px 24px rgba(20,26,42,.06);
+    --radius:18px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0e1320; --surface:#161d2e; --surface-2:#1d2639;
+      --text:#e9edf6; --muted:#9aa5ba; --line:#28324a;
+      --primary:#7ea6ff; --primary-2:#a9c3ff; --primary-soft:#1f2c4d;
+      --accent:#ff8378; --ok:#4fd3a0;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.55;
+    min-height:100vh; word-break:keep-all;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  a{color:inherit;text-decoration:none}
+  button,input{font:inherit;color:inherit}
+  .wrap{max-width:960px;margin:0 auto;padding:0 16px}
+
+  /* ===== Hero ===== */
+  .hero{
+    background:linear-gradient(135deg,#123a86 0%,#1b4dab 45%,#3a74e0 100%);
+    color:#fff; padding:44px 0 72px; position:relative; overflow:hidden;
+  }
+  .hero::after{
+    content:""; position:absolute; right:-80px; top:-80px; width:280px; height:280px;
+    border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%);
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:12px; font-weight:600; letter-spacing:.04em;
+    background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22);
+    padding:5px 11px; border-radius:999px; margin-bottom:14px;
+  }
+  .hero h1{font-size:clamp(28px,7vw,40px); font-weight:800; letter-spacing:-.02em; line-height:1.2}
+  .hero p{margin-top:10px; font-size:15px; opacity:.88; max-width:520px}
+
+  /* ===== Summary card (overlaps hero) ===== */
+  .summary{
+    margin-top:-44px; position:relative; z-index:1;
+    background:var(--surface); border-radius:var(--radius); box-shadow:var(--shadow);
+    display:grid; grid-template-columns:repeat(3,1fr) 1.3fr; overflow:hidden;
+  }
+  .stat{padding:18px 16px; border-right:1px solid var(--line)}
+  .stat b{display:block; font-size:24px; font-weight:800; letter-spacing:-.02em; color:var(--primary)}
+  .stat span{font-size:12.5px; color:var(--muted)}
+  .dday{padding:14px 16px; display:flex; flex-direction:column; justify-content:center; gap:6px; background:var(--surface-2)}
+  .dday-top{display:flex; align-items:baseline; justify-content:space-between; gap:8px}
+  .dday-num{font-size:24px; font-weight:800; color:var(--accent); letter-spacing:-.02em}
+  .dday-label{font-size:12.5px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .link-btn{background:none; border:0; color:var(--primary); font-size:12.5px; font-weight:600; cursor:pointer; padding:0; text-align:left}
+  .dday-form{display:none; gap:6px; flex-wrap:wrap}
+  .dday-form.open{display:flex}
+  .dday-form input{
+    flex:1 1 120px; min-width:0; border:1px solid var(--line); background:var(--surface);
+    border-radius:10px; padding:7px 9px; font-size:14px;
+  }
+  .dday-form button{border:0; border-radius:10px; padding:7px 12px; font-size:13px; font-weight:600; cursor:pointer}
+  .btn-save{background:var(--primary); color:#fff}
+  .btn-clear{background:var(--line)}
+
+  /* ===== Resume banner ===== */
+  .resume{
+    display:none; margin-top:16px; align-items:center; gap:12px;
+    background:var(--primary-soft); border:1px solid transparent; border-radius:14px; padding:12px 14px;
+  }
+  .resume.show{display:flex}
+  .resume .dot{width:8px; height:8px; border-radius:50%; background:var(--primary); flex:none; box-shadow:0 0 0 4px rgba(58,116,224,.2)}
+  .resume p{flex:1; font-size:14px}
+  .resume p strong{color:var(--primary)}
+  .resume > span:last-child{font-size:13px; font-weight:700; color:var(--primary); white-space:nowrap}
+
+  /* ===== Toolbar ===== */
+  .toolbar{margin:28px 0 14px; display:flex; flex-direction:column; gap:12px}
+  .toolbar h2{font-size:20px; font-weight:800; letter-spacing:-.01em}
+  .search{position:relative}
+  .search svg{position:absolute; left:14px; top:50%; transform:translateY(-50%); width:18px; height:18px; color:var(--muted)}
+  .search input{
+    width:100%; border:1px solid var(--line); background:var(--surface);
+    border-radius:14px; padding:12px 14px 12px 42px; font-size:16px; outline:none;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  .search input:focus{border-color:var(--primary-2); box-shadow:0 0 0 4px var(--primary-soft)}
+  .chips{display:flex; gap:8px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{
+    flex:none; border:1px solid var(--line); background:var(--surface); color:var(--muted);
+    border-radius:999px; padding:7px 14px; font-size:13.5px; font-weight:600; cursor:pointer;
+    transition:all .15s;
+  }
+  .chip[aria-pressed="true"]{background:var(--primary); border-color:var(--primary); color:#fff}
+
+  /* ===== Cards ===== */
+  .grid{display:grid; grid-template-columns:1fr; gap:12px}
+  .card{
+    position:relative; display:flex; gap:14px; align-items:center;
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px; box-shadow:var(--shadow);
+    transition:transform .18s ease, border-color .18s ease;
+  }
+  .card:hover{transform:translateY(-2px); border-color:var(--primary-2)}
+  .card:active{transform:scale(.99)}
+  .card:focus-visible{outline:3px solid var(--primary-2); outline-offset:2px}
+  .icon{
+    flex:none; width:52px; height:52px; border-radius:15px;
+    display:grid; place-items:center; color:#fff;
+  }
+  .icon svg{width:26px; height:26px}
+  .body{flex:1; min-width:0}
+  .meta-top{display:flex; align-items:center; gap:6px; margin-bottom:3px; flex-wrap:wrap}
+  .tag{font-size:11.5px; font-weight:700; color:var(--muted)}
+  .badge{font-size:10.5px; font-weight:800; padding:2px 7px; border-radius:6px; letter-spacing:.03em}
+  .badge.new{background:var(--accent); color:#fff}
+  .badge.soon{background:var(--line); color:var(--muted)}
+  .card h3{font-size:17px; font-weight:800; letter-spacing:-.01em; line-height:1.35}
+  .card .desc{font-size:13px; color:var(--muted); margin-top:2px}
+  .nums{display:flex; gap:10px; margin-top:8px; font-size:12.5px; color:var(--muted); flex-wrap:wrap}
+  .nums b{color:var(--text); font-weight:700}
+  .visited{color:var(--ok); font-weight:600}
+  .arrow{flex:none; width:22px; height:22px; color:var(--muted); transition:transform .18s, color .18s}
+  .card:hover .arrow{transform:translateX(3px); color:var(--primary)}
+  .card.disabled{opacity:.55; pointer-events:none; box-shadow:none}
+  .empty{display:none; text-align:center; padding:40px 16px; color:var(--muted); font-size:14px}
+  .empty.show{display:block}
+
+  /* ===== Guide ===== */
+  .guide{margin:36px 0 0; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:20px}
+  .guide h2{font-size:17px; font-weight:800; margin-bottom:14px}
+  .steps{list-style:none; display:grid; gap:14px}
+  .steps li{display:flex; gap:12px; font-size:14px}
+  .steps .n{
+    flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center;
+    background:var(--primary-soft); color:var(--primary); font-size:13px; font-weight:800;
+  }
+  .steps strong{display:block; font-size:14.5px}
+  .steps p{color:var(--muted); font-size:13.5px}
+
+  footer{padding:32px 0 40px; text-align:center; font-size:12.5px; color:var(--muted)}
+
+  /* ===== Responsive ===== */
+  @media (max-width:640px){
+    .hero{padding:36px 0 64px}
+    .summary{grid-template-columns:repeat(3,1fr)}
+    .stat{padding:14px 12px; text-align:center}
+    .stat:nth-child(3){border-right:0}
+    .stat b{font-size:21px}
+    .dday{grid-column:1 / -1; border-top:1px solid var(--line)}
+  }
+  @media (min-width:700px){
+    .grid{grid-template-columns:1fr 1fr; gap:14px}
+    .toolbar{flex-direction:row; align-items:center; justify-content:space-between; flex-wrap:wrap}
+    .search{flex:1 1 280px; max-width:360px}
+    .chips{flex-basis:100%; order:3}
+    .steps{grid-template-columns:repeat(3,1fr)}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></svg>
+      중앙대학교 간호학과 · Medical Terminology
+    </span>
+    <h1>의학용어 연습실</h1>
+    <p>용어 · 약어 · 의미를 번갈아 맞히며 시험 전까지 반복해서 익혀요. 단원을 골라 바로 시작하세요.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- 요약 + 시험 D-day -->
+  <section class="summary" aria-label="학습 요약">
+    <div class="stat"><b id="sUnits">0</b><span>단원</span></div>
+    <div class="stat"><b id="sTerms">0</b><span>용어</span></div>
+    <div class="stat"><b id="sQs">0</b><span>문제</span></div>
+    <div class="dday">
+      <div class="dday-top">
+        <span class="dday-num" id="ddNum">D-?</span>
+        <span class="dday-label" id="ddLabel">시험일을 설정해 보세요</span>
+      </div>
+      <button class="link-btn" id="ddToggle" type="button">시험일 설정</button>
+      <form class="dday-form" id="ddForm">
+        <input type="text" id="ddName" placeholder="시험 이름 (예: 중간고사)" maxlength="20">
+        <input type="date" id="ddDate" required>
+        <button class="btn-save" type="submit">저장</button>
+        <button class="btn-clear" type="button" id="ddClear">삭제</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- 이어서 학습 -->
+  <a class="resume" id="resume" href="#">
+    <span class="dot"></span>
+    <p>최근 학습: <strong id="resumeName"></strong> <span id="resumeWhen" style="color:var(--muted)"></span></p>
+    <span>이어서 하기 →</span>
+  </a>
+
+  <!-- 검색 / 필터 -->
+  <div class="toolbar">
+    <h2>연습 단원</h2>
+    <label class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" id="q" placeholder="단원 검색 (예: 근골격, 노인)" autocomplete="off">
+    </label>
+    <div class="chips" id="chips" role="group" aria-label="분류 필터"></div>
+  </div>
+
+  <section class="grid" id="grid" aria-live="polite"></section>
+  <p class="empty" id="empty">검색 결과가 없어요.</p>
+
+  <!-- 이용 방법 -->
+  <section class="guide">
+    <h2>이렇게 연습해요</h2>
+    <ol class="steps">
+      <li><span class="n">1</span><div><strong>한 라운드에 모든 용어 한 번</strong><p>라운드마다 전체 용어가 고르게 섞여 나오고, 각 용어는 5번씩 출제돼요.</p></div></li>
+      <li><span class="n">2</span><div><strong>틀린 용어는 오답 복습</strong><p>많이 틀린 순서로 정리되니 시험 직전엔 오답만 집중해서 보세요.</p></div></li>
+      <li><span class="n">3</span><div><strong>기록은 이 기기에 저장</strong><p>진행 상황은 브라우저에 남아요. 같은 기기·같은 브라우저로 이어서 푸세요.</p></div></li>
+    </ol>
+  </section>
+</main>
+
+<footer>의학용어 연습실 · 간호학과 시험 대비용</footer>
+
+<script>
+/* =========================================================
+   ★ 새 연습 페이지를 추가할 때는 아래 UNITS 배열에만 한 줄 추가하세요.
+   - title  : 카드 제목
+   - desc   : 짧은 설명
+   - url    : 연습 페이지 주소
+   - terms  : 용어 개수 (문제 수 = terms × repeat 로 자동 계산)
+   - repeat : 용어당 출제 횟수 (기본 5)
+   - tag    : 분류 (필터 칩으로 자동 생성)
+   - icon   : bone | elder | heart | lung | brain | pill | book
+   - color  : 아이콘 배경색
+   - added  : 추가한 날짜 (7일 이내면 NEW 표시)
+   - soon   : true 로 두면 '준비 중' 카드로 표시
+   ========================================================= */
+const UNITS = [
+  { title:"근골격계 의학용어", desc:"뼈·관절·근육 관련 용어와 약어", url:"https://smbill7.github.io/test/",
+    terms:140, repeat:5, tag:"계통별", icon:"bone", color:"#3a74e0", added:"2026-11-01" },
+  { title:"노인간호 의학용어", desc:"노인간호에서 쓰는 핵심 용어와 약어", url:"https://smbill7.github.io/elder/",
+    terms:79, repeat:5, tag:"노인간호", icon:"elder", color:"#1f9d6b", added:"2026-11-08" },
+  // 예시) { title:"심혈관계 의학용어", desc:"심장·혈관 관련 용어", url:"https://smbill7.github.io/cardio/",
+  //        terms:100, repeat:5, tag:"계통별", icon:"heart", color:"#e2574c", added:"2026-11-20" },
+  // 예시) { title:"호흡기계 의학용어", desc:"준비 중", url:"#", terms:0, tag:"계통별", icon:"lung", color:"#8a63d2", soon:true },
+];
+
+const ICONS = {
+  bone:'<path d="M17 10c.7-.7 1.69 0 2.5 0a2.5 2.5 0 1 0 0-5 .5.5 0 0 1-.5-.5 2.5 2.5 0 1 0-5 0c0 .81.7 1.8 0 2.5l-7 7c-.7.7-1.69 0-2.5 0a2.5 2.5 0 0 0 0 5c.28 0 .5.22.5.5a2.5 2.5 0 1 0 5 0c0-.81-.7-1.8 0-2.5Z"/>',
+  elder:'<circle cx="10" cy="4.5" r="2"/><path d="M10 7.5v6.5M10 14l-3 7M10 14l2.5 7M10 9.5l4 2.5M16 12v9"/>',
+  heart:'<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
+  lung:'<path d="M12 3v9M12 12c-1 0-2 1-3 1M12 12c1 0 2 1 3 1"/><path d="M8.5 7C5 8 3 13 3 18a2 2 0 0 0 2.6 1.9L9 19V8.6A1.6 1.6 0 0 0 8.5 7ZM15.5 7C19 8 21 13 21 18a2 2 0 0 1-2.6 1.9L15 19V8.6A1.6 1.6 0 0 1 15.5 7Z"/>',
+  brain:'<path d="M12 5a3 3 0 0 0-5.8-1A3 3 0 0 0 4 8.5a3.5 3.5 0 0 0 .5 6A3 3 0 0 0 9 19a3 3 0 0 0 3-1M12 5a3 3 0 0 1 5.8-1A3 3 0 0 1 20 8.5a3.5 3.5 0 0 1-.5 6A3 3 0 0 1 15 19a3 3 0 0 1-3-1M12 5v13"/>',
+  pill:'<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7ZM8.5 8.5l7 7"/>',
+  book:'<path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/>'
+};
+const ARROW = '<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>';
+
+/* ---------- 브라우저 저장 (실패해도 페이지는 정상 동작) ---------- */
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+const VISIT_KEY = "mtHub.visits", EXAM_KEY = "mtHub.exam";
+
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today0 = () => { const d = new Date(); d.setHours(0,0,0,0); return d; };
+function ago(ts){
+  const m = Math.floor((Date.now() - ts) / 60000);
+  if (m < 1) return "방금 전";
+  if (m < 60) return m + "분 전";
+  const h = Math.floor(m / 60); if (h < 24) return h + "시간 전";
+  const d = Math.floor(h / 24); return d < 30 ? d + "일 전" : Math.floor(d / 30) + "달 전";
+}
+
+/* ---------- 요약 ---------- */
+const live = UNITS.filter(u => !u.soon);
+const fmt = n => n.toLocaleString("ko-KR");
+document.getElementById("sUnits").textContent = live.length;
+document.getElementById("sTerms").textContent = fmt(live.reduce((a,u) => a + (u.terms||0), 0));
+document.getElementById("sQs").textContent = fmt(live.reduce((a,u) => a + (u.terms||0) * (u.repeat||5), 0));
+
+/* ---------- 필터 칩 ---------- */
+let curTag = "전체";
+const tags = ["전체", ...new Set(UNITS.map(u => u.tag).filter(Boolean))];
+const chipsEl = document.getElementById("chips");
+chipsEl.innerHTML = tags.map(t => `<button class="chip" type="button" aria-pressed="${t===curTag}" data-tag="${esc(t)}">${esc(t)}</button>`).join("");
+chipsEl.addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if (!b) return;
+  curTag = b.dataset.tag;
+  chipsEl.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.tag === curTag));
+  render();
+});
+
+/* ---------- 카드 렌더 ---------- */
+const grid = document.getElementById("grid"), qEl = document.getElementById("q");
+function render(){
+  const q = qEl.value.trim().toLowerCase().replace(/\s+/g, "");
+  const visits = store.get(VISIT_KEY, {});
+  const list = UNITS.filter(u =>
+    (curTag === "전체" || u.tag === curTag) &&
+    (!q || (u.title + u.desc + u.tag).toLowerCase().replace(/\s+/g, "").includes(q))
+  );
+  grid.innerHTML = list.map(u => {
+    const isNew = u.added && !u.soon && (today0() - new Date(u.added)) / 864e5 <= 7;
+    const v = visits[u.url];
+    const qs = (u.terms||0) * (u.repeat||5);
+    return `
+    <a class="card${u.soon ? " disabled" : ""}" href="${esc(u.url)}" data-url="${esc(u.url)}" data-title="${esc(u.title)}"${u.soon ? ' aria-disabled="true" tabindex="-1"' : ""}>
+      <span class="icon" style="background:${esc(u.color||"#3a74e0")}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS[u.icon]||ICONS.book}</svg>
+      </span>
+      <span class="body">
+        <span class="meta-top">
+          <span class="tag">${esc(u.tag||"")}</span>
+          ${isNew ? '<span class="badge new">NEW</span>' : ""}
+          ${u.soon ? '<span class="badge soon">준비 중</span>' : ""}
+        </span>
+        <h3>${esc(u.title)}</h3>
+        <p class="desc">${esc(u.desc||"")}</p>
+        ${u.soon ? "" : `<span class="nums">
+          <span>용어 <b>${fmt(u.terms)}</b>개</span>
+          <span>문제 <b>${fmt(qs)}</b>개</span>
+          ${v ? `<span class="visited">✓ ${ago(v)} 학습</span>` : ""}
+        </span>`}
+      </span>
+      ${ARROW}
+    </a>`;
+  }).join("");
+  document.getElementById("empty").classList.toggle("show", list.length === 0);
+}
+qEl.addEventListener("input", render);
+
+/* 카드 클릭 시 최근 학습 기록 */
+grid.addEventListener("click", e => {
+  const a = e.target.closest(".card"); if (!a || a.classList.contains("disabled")) return;
+  const visits = store.get(VISIT_KEY, {});
+  visits[a.dataset.url] = Date.now();
+  store.set(VISIT_KEY, visits);
+});
+
+/* ---------- 이어서 학습 배너 ---------- */
+function renderResume(){
+  const visits = store.get(VISIT_KEY, {});
+  const last = live
+    .filter(u => visits[u.url])
+    .sort((a,b) => visits[b.url] - visits[a.url])[0];
+  const el = document.getElementById("resume");
+  if (!last){ el.classList.remove("show"); return; }
+  el.href = last.url;
+  document.getElementById("resumeName").textContent = last.title;
+  document.getElementById("resumeWhen").textContent = "· " + ago(visits[last.url]);
+  el.classList.add("show");
+  el.onclick = () => { visits[last.url] = Date.now(); store.set(VISIT_KEY, visits); };
+}
+
+/* ---------- 시험 D-day ---------- */
+const ddForm = document.getElementById("ddForm");
+function renderDday(){
+  const ex = store.get(EXAM_KEY, null);
+  const num = document.getElementById("ddNum"), label = document.getElementById("ddLabel");
+  const toggle = document.getElementById("ddToggle");
+  if (!ex || !ex.date){
+    num.textContent = "D-?"; label.textContent = "시험일을 설정해 보세요"; toggle.textContent = "시험일 설정"; return;
+  }
+  const [y,m,d] = ex.date.split("-").map(Number);
+  const diff = Math.round((new Date(y, m-1, d) - today0()) / 864e5);
+  num.textContent = diff > 0 ? "D-" + diff : diff === 0 ? "D-Day" : "D+" + (-diff);
+  label.textContent = (ex.name || "시험") + " · " + m + "월 " + d + "일";
+  toggle.textContent = "변경";
+  document.getElementById("ddName").value = ex.name || "";
+  document.getElementById("ddDate").value = ex.date;
+}
+document.getElementById("ddToggle").addEventListener("click", () => ddForm.classList.toggle("open"));
+ddForm.addEventListener("submit", e => {
+  e.preventDefault();
+  store.set(EXAM_KEY, { name: document.getElementById("ddName").value.trim(), date: document.getElementById("ddDate").value });
+  ddForm.classList.remove("open"); renderDday();
+});
+document.getElementById("ddClear").addEventListener("click", () => {
+  store.del(EXAM_KEY); ddForm.reset(); ddForm.classList.remove("open"); renderDday();
+});
+
+/* 뒤로가기로 돌아왔을 때도 '최근 학습' 갱신 */
+window.addEventListener("pageshow", () => { render(); renderResume(); });
+render(); renderResume(); renderDday();
+</script>
+</body>
+</html>
